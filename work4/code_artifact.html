@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wedding Day — Elena & Andrey</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --cream-bg: #f9f6f0;
+            --cream-card: #ffffff;
+            --burgundy: #5A151E;
+            --burgundy-dark: #3f0d14;
+            --gold-accent: #C5A059;
+            --gold-light: #E6CA85;
+            --text-dark: #222222;
+            --text-muted: #666666;
+            --border-subtle: #e8e2d8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #121212;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Mobile Container Frame for high-end preview */
+        .mobile-frame {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--cream-bg);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+            padding-bottom: 40px;
+        }
+
+        /* Ambient Canvas overlay for floating rose petals */
+        #petalsCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Confetti Canvas */
+        #confettiCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .font-serif { font-family: 'Cormorant Garamond', serif; }
+        .font-title { font-family: 'Playfair Display', serif; }
+        .font-script { font-family: 'Alex Brush', cursive; }
+
+        /* Gold Foil Shimmer Animation */
+        .gold-shimmer {
+            background: linear-gradient(135deg, #A88138 0%, #E6CA85 50%, #A88138 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shimmer 4s linear infinite;
+        }
+
+        @keyframes shimmer {
+            to { background-position: 200% center; }
+        }
+
+        .audio-player-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 100;
+            background-color: var(--burgundy);
+            color: #ffffff;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(90, 21, 30, 0.4);
+            cursor: pointer;
+            border: 2px solid var(--gold-accent);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .audio-player-btn:hover {
+            transform: scale(1.08);
+            background-color: var(--burgundy-dark);
+        }
+
+        /* Animated Equalizer Bars */
+        .equalizer {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 16px;
+        }
+
+        .equalizer .bar {
+            width: 3px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            animation: bounce 1.2s infinite ease-in-out;
+            animation-play-state: paused;
+        }
+
+        .audio-player-btn.playing .equalizer .bar {
+            animation-play-state: running;
+        }
+
+        .equalizer .bar:nth-child(1) { height: 60%; animation-delay: 0.1s; }
+        .equalizer .bar:nth-child(2) { height: 100%; animation-delay: 0.3s; }
+        .equalizer .bar:nth-child(3) { height: 40%; animation-delay: 0.2s; }
+
+        @keyframes bounce {
+            0%, 100% { transform: scaleY(0.3); }
+            50% { transform: scaleY(1); }
+        }
+
+        .hero-section {
+            padding: 50px 24px 30px 24px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title-the {
+            font-family: 'Alex Brush', cursive;
+            font-size: 2.8rem;
+            color: var(--text-dark);
+            line-height: 0.8;
+            display: block;
+        }
+
+        .hero-title-wedding {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            letter-spacing: 4px;
+            font-weight: 400;
+            text-transform: uppercase;
+            line-height: 0.9;
+            color: var(--text-dark);
+            display: block;
+            margin-top: 5px;
+        }
+
+        .hero-title-day {
+            font-family: 'Alex Brush', cursive;
+            font-size: 2.8rem;
+            color: var(--text-dark);
+            line-height: 0.8;
+            display: block;
+            margin-top: -5px;
+        }
+
+        .couple-photo-wrapper {
+            width: 230px;
+            height: 290px;
+            margin: 25px auto;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
+            cursor: pointer;
+            transition: transform 0.4s ease;
+        }
+
+        .couple-photo-wrapper:hover {
+            transform: translateY(-4px);
+        }
+
+        .couple-photo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-badge {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.55);
+            color: #ffffff;
+            font-size: 0.75rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .couple-names {
+            font-family: 'Alex Brush', cursive;
+            font-size: 3.4rem;
+            color: var(--text-dark);
+            margin: 15px 0 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .couple-names span.heart {
+            color: var(--burgundy);
+            font-size: 1.4rem;
+        }
+
+        .hero-quote {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            line-height: 1.8;
+            color: var(--text-muted);
+            max-width: 340px;
+            margin: 20px auto 0 auto;
+        }
+
+        .banner-divider {
+            width: 100%;
+            height: 190px;
+            background-image: url('https://images.unsplash.com/photo-1541123437800-1bb1317badc2?auto=format&fit=crop&q=80&w=800');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .intro-section {
+            padding: 35px 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .intro-card {
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 30px 20px;
+            background-color: var(--cream-card);
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        .intro-card p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem;
+            line-height: 1.5;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border-subtle);
+        }
+
+        .timer-unit {
+            text-align: center;
+        }
+
+        .timer-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--burgundy);
+            display: block;
+        }
+
+        .timer-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .calendar-section {
+            padding: 30px 24px 40px 24px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .month-title {
+            font-family: 'Alex Brush', cursive;
+            font-size: 4rem;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .calendar-grid {
+            max-width: 320px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .calendar-day-head {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+        }
+
+        .calendar-date {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 32px;
+        }
+
+        .calendar-date.highlighted {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .calendar-date.highlighted::before {
+            content: '';
+            position: absolute;
+            width: 34px;
+            height: 34px;
+            background-color: var(--burgundy);
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            z-index: 1;
+            top: -1px;
+        }
+
+        .calendar-date.highlighted span {
+            position: relative;
+            z-index: 2;
+            margin-top: -3px;
+        }
+
+        .add-calendar-container {
+            margin-top: 25px;
+        }
+
+        .btn-outline-gold {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: 1px solid var(--gold-accent);
+            color: var(--burgundy);
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        .btn-outline-gold:hover {
+            background-color: var(--burgundy);
+            color: #ffffff;
+            border-color: var(--burgundy);
+        }
+
+        .timing-section {
+            background-color: var(--burgundy);
+            color: #ffffff;
+            padding: 50px 24px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .timing-title {
+            font-family: 'Alex Brush', cursive;
+            font-size: 4rem;
+            color: #ffffff;
+            margin-bottom: 30px;
+        }
+
+        .timing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px 20px;
+            max-width: 340px;
+            margin: 0 auto 20px auto;
+        }
+
+        .timing-time {
+            font-family: 'Alex Brush', cursive;
+            font-size: 2.8rem;
+            color: var(--gold-light);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .timing-desc {
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.4;
+        }
+
+        .venue-section {
+            padding: 45px 24px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .venue-photo {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .venue-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .venue-address {
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .maps-grid {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .map-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background-color: var(--cream-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .map-chip:hover {
+            border-color: var(--burgundy);
+            color: var(--burgundy);
+            transform: translateY(-2px);
+        }
+
+        .dresscode-section {
+            padding: 45px 24px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .dresscode-title {
+            font-family: 'Alex Brush', cursive;
+            font-size: 4rem;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .dresscode-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            line-height: 1.4;
+            color: var(--text-dark);
+            max-width: 320px;
+            margin: 0 auto 30px auto;
+        }
+
+        .palette-grid {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            max-width: 360px;
+            margin: 0 auto;
+        }
+
+        .swatch-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .swatch-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .swatch-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 8px;
+            border: 2px solid #ffffff;
+            position: relative;
+        }
+
+        .swatch-name {
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .swatch-hex {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+        }
+
+        .rsvp-banner-section {
+            background-color: var(--burgundy);
+            color: #ffffff;
+            padding: 50px 24px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .rsvp-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.9rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .rsvp-desc {
+            font-size: 0.78rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 330px;
+            margin: 0 auto 25px auto;
+        }
+
+        .btn-cream {
+            display: inline-block;
+            background-color: #ffffff;
+            color: var(--burgundy);
+            padding: 14px 36px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .btn-cream:hover {
+            background-color: var(--cream-bg);
+            transform: translateY(-2px);
+        }
+
+        .contacts-section {
+            padding: 50px 24px 60px 24px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .contacts-title {
+            font-family: 'Alex Brush', cursive;
+            font-size: 4rem;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .contacts-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            line-height: 1.4;
+            color: var(--text-dark);
+            max-width: 320px;
+            margin: 0 auto 55px auto; /* Spacious layout preventing text overlap */
+        }
+
+        .envelope-container {
+            width: 290px;
+            height: 200px;
+            margin: 0 auto;
+            position: relative;
+            cursor: pointer;
+            perspective: 1000px;
+        }
+
+        .envelope-body {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background-color: var(--burgundy);
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.22);
+            z-index: 3;
+            overflow: hidden;
+        }
+
+        .envelope-body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 150px 0 0 145px;
+            border-color: transparent transparent transparent #4d0a0e;
+            z-index: 4;
+        }
+
+        .envelope-body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 150px 145px;
+            border-color: transparent transparent #43070b transparent;
+            z-index: 4;
+        }
+
+        .envelope-text-withlove {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Alex Brush', cursive;
+            font-size: 2.2rem;
+            color: #ffffff;
+            z-index: 5;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 100px 145px 0 145px;
+            border-color: #6e0f15 transparent transparent transparent;
+            transform-origin: top center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 5;
+        }
+
+        /* Interactive Wax Seal */
+        .wax-seal {
+            position: absolute;
+            top: 130px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 44px;
+            height: 44px;
+            background: radial-gradient(circle, #8a1720 0%, #4d0a0e 100%);
+            border-radius: 50%;
+            border: 2px solid var(--gold-accent);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-light);
+            font-size: 0.9rem;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        /* Letter Card Inside Envelope */
+        .envelope-card {
+            position: absolute;
+            top: 55px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 88%;
+            background-color: #ffffff;
+            padding: 16px 12px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 2;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .phone-link {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.72rem;
+            color: var(--burgundy);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Envelope Unfolded State */
+        .envelope-container.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-container.open .wax-seal {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .envelope-container.open .envelope-card {
+            transform: translate(-50%, -75px);
+            z-index: 4;
+        }
+
+        .lightbox-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+
+        .lightbox-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .lightbox-img {
+            width: 100%;
+            max-height: 70vh;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-caption {
+            color: #ffffff;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            margin-top: 15px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: #ffffff;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.2);
+            color: #ffffff;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-nav.prev { left: -15px; }
+        .lightbox-nav.next { right: -15px; }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background-color: var(--cream-bg);
+            width: 100%;
+            max-width: 440px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 30px 24px;
+            border-radius: 16px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: translateY(0);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            background-color: #ffffff;
+            font-family: inherit;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--burgundy);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82rem;
+            cursor: pointer;
+        }
+
+        .radio-label input {
+            accent-color: var(--burgundy);
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background-color: var(--burgundy);
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            z-index: 10000;
+            transition: transform 0.4s ease;
+            pointer-events: none;
+            border: 1px solid var(--gold-accent);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Scroll Animations */
+        .fade-in-scroll {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Floating Rose Petals Canvas -->
+    <canvas id="petalsCanvas"></canvas>
+    
+    <!-- Confetti Explosion Canvas -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <!-- Floating Audio Background Player Toggle -->
+    <div class="audio-player-btn" id="audioToggleBtn" title="Включить музыку">
+        <div class="equalizer">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </div>
+    <!-- Royalty Free Romantic Piano Track -->
+    <audio id="bgAudio" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=wedding-piano-112199.mp3"></audio>
+
+    <!-- Toast Notification Popup -->
+    <div class="toast" id="toastNotification">Уведомление</div>
+
+    <!-- MAIN MOBILE FRAME CONTAINER -->
+    <div class="mobile-frame">
+
+        <section class="hero-section">
+            <div class="hero-header">
+                <span class="hero-title-the">The</span>
+                <span class="hero-title-wedding gold-shimmer">WEDDING</span>
+                <span class="hero-title-day">day</span>
+            </div>
+
+            <!-- Couple Photo (Click to open Lightbox Gallery) -->
+            <div class="couple-photo-wrapper" onclick="openGallery(0)">
+                <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=600" alt="Elena and Andrey">
+                <div class="photo-badge"><i class="fa-solid fa-images"></i> Галерея</div>
+            </div>
+
+            <h1 class="couple-names">
+                Elena <span class="heart">♥</span> Andrey
+            </h1>
+
+            <p class="hero-quote">
+                любовь — это выбор, который мы делаем каждый день. И в этот особенный вечер мы скажем «да» друг другу перед теми, кто дорог нам больше всего.
+            </p>
+        </section>
+
+        <!-- BANNER DIVIDER PHOTO -->
+        <div class="banner-divider"></div>
+
+        <section class="intro-section fade-in-scroll">
+            <div class="intro-card">
+                <p>
+                    Два сердца. Один день. И те, кто делает нашу жизнь светлее — Вы.<br>
+                    С любовью приглашаем разделить этот миг
+                </p>
+
+                <!-- Live Countdown Timer -->
+                <div class="countdown-timer">
+                    <div class="timer-unit">
+                        <span class="timer-num" id="cdDays">00</span>
+                        <span class="timer-label">дней</span>
+                    </div>
+                    <div class="timer-unit">
+                        <span class="timer-num" id="cdHours">00</span>
+                        <span class="timer-label">часов</span>
+                    </div>
+                    <div class="timer-unit">
+                        <span class="timer-num" id="cdMins">00</span>
+                        <span class="timer-label">минут</span>
+                    </div>
+                    <div class="timer-unit">
+                        <span class="timer-num" id="cdSecs">00</span>
+                        <span class="timer-label">секунд</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="calendar-section fade-in-scroll">
+            <h2 class="month-title">August</h2>
+
+            <div class="calendar-grid">
+                <div class="calendar-day-head">S</div>
+                <div class="calendar-day-head">M</div>
+                <div class="calendar-day-head">T</div>
+                <div class="calendar-day-head">W</div>
+                <div class="calendar-day-head">T</div>
+                <div class="calendar-day-head">F</div>
+                <div class="calendar-day-head">S</div>
+
+                <div class="calendar-date"></div>
+                <div class="calendar-date">1</div>
+                <div class="calendar-date">2</div>
+                <div class="calendar-date">3</div>
+                <div class="calendar-date">4</div>
+                <div class="calendar-date">5</div>
+                <div class="calendar-date">6</div>
+
+                <div class="calendar-date">7</div>
+                <div class="calendar-date">8</div>
+                <div class="calendar-date">9</div>
+                <div class="calendar-date">10</div>
+                <div class="calendar-date highlighted"><span>11</span></div>
+                <div class="calendar-date">12</div>
+                <div class="calendar-date">13</div>
+
+                <div class="calendar-date">14</div>
+                <div class="calendar-date">15</div>
+                <div class="calendar-date">16</div>
+                <div class="calendar-date">17</div>
+                <div class="calendar-date">18</div>
+                <div class="calendar-date">19</div>
+                <div class="calendar-date">20</div>
+
+                <div class="calendar-date">21</div>
+                <div class="calendar-date">22</div>
+                <div class="calendar-date">23</div>
+                <div class="calendar-date">24</div>
+                <div class="calendar-date">25</div>
+                <div class="calendar-date">26</div>
+                <div class="calendar-date">27</div>
+
+                <div class="calendar-date">28</div>
+                <div class="calendar-date">29</div>
+                <div class="calendar-date">30</div>
+                <div class="calendar-date">31</div>
+                <div class="calendar-date"></div>
+                <div class="calendar-date"></div>
+                <div class="calendar-date"></div>
+            </div>
+
+            <!-- Add to Calendar Link -->
+            <div class="add-calendar-container">
+                <button class="btn-outline-gold" onclick="downloadIcsCalendar()">
+                    <i class="fa-regular fa-calendar-plus"></i> Добавить в календарь
+                </button>
+            </div>
+        </section>
+
+        <section class="timing-section fade-in-scroll">
+            <h2 class="timing-title">Timing</h2>
+
+            <div class="timing-grid">
+                <div class="timing-item">
+                    <div class="timing-time">17:00</div>
+                    <div class="timing-desc">Торжественная<br>церемония</div>
+                </div>
+                <div class="timing-item">
+                    <div class="timing-time">18:00</div>
+                    <div class="timing-desc">Праздничный<br>банкет</div>
+                </div>
+                <div class="timing-item">
+                    <div class="timing-time">17:30</div>
+                    <div class="timing-desc">Фотосессия</div>
+                </div>
+                <div class="timing-item">
+                    <div class="timing-time">23:00</div>
+                    <div class="timing-desc">Завершение<br>вечера</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="venue-section fade-in-scroll">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=800" alt="Ресторан Lumière" class="venue-photo">
+            
+            <h3 class="venue-name">Ресторан Lumière</h3>
+            <p class="venue-address">
+                Адрес: г. Санкт-Петербург,<br>
+                ул. Кленовая, д. 17, лит. Б
+            </p>
+
+            <div class="maps-grid">
+                <a href="https://yandex.ru/maps/?text=Санкт-Петербург+Кленовая+17" target="_blank" class="map-chip">
+                    <i class="fa-solid fa-map-pin" style="color:#fc3f1d;"></i> Яндекс.Карты
+                </a>
+                <a href="https://maps.google.com/?q=Санкт-Петербург+Кленовая+17" target="_blank" class="map-chip">
+                    <i class="fa-solid fa-location-dot" style="color:#4285F4;"></i> Google Maps
+                </a>
+                <a href="https://2gis.ru/spb/search/Кленовая%2017" target="_blank" class="map-chip">
+                    <i class="fa-solid fa-compass" style="color:#2ecc71;"></i> 2GIS
+                </a>
+            </div>
+        </section>
+
+        <section class="dresscode-section fade-in-scroll">
+            <h2 class="dresscode-title">Dress-code</h2>
+            <p class="dresscode-text">
+                Для нас это особенный день и мы будем признательны, если вы поддержите цветовую гамму торжества
+            </p>
+
+            <div class="palette-grid">
+                <div class="swatch-card" onclick="copyColor('#5A151E', 'Deep Burgundy')">
+                    <div class="swatch-circle" style="background-color: #5A151E;"></div>
+                    <span class="swatch-name">Burgundy</span>
+                    <span class="swatch-hex">#5A151E</span>
+                </div>
+                <div class="swatch-card" onclick="copyColor('#C8929A', 'Dusty Rose')">
+                    <div class="swatch-circle" style="background-color: #C8929A;"></div>
+                    <span class="swatch-name">Dusty Rose</span>
+                    <span class="swatch-hex">#C8929A</span>
+                </div>
+                <div class="swatch-card" onclick="copyColor('#D4AF37', 'Warm Gold')">
+                    <div class="swatch-circle" style="background-color: #D4AF37;"></div>
+                    <span class="swatch-name">Warm Gold</span>
+                    <span class="swatch-hex">#D4AF37</span>
+                </div>
+                <div class="swatch-card" onclick="copyColor('#E2DACD', 'Cream Velvet')">
+                    <div class="swatch-circle" style="background-color: #E2DACD;"></div>
+                    <span class="swatch-name">Cream</span>
+                    <span class="swatch-hex">#E2DACD</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="rsvp-banner-section fade-in-scroll">
+            <h3 class="rsvp-title">Дорогие гости & родные</h3>
+            <p class="rsvp-desc">
+                нам важно знать о вас немного больше, чтобы наш день стал комфортным и радостным для всех. Пожалуйста, заполните анкету ниже
+            </p>
+            <button class="btn-cream" onclick="openRsvpModal()">
+                Заполнить анкету
+            </button>
+        </section>
+
+        <section class="contacts-section fade-in-scroll">
+            <h2 class="contacts-title">Contacts</h2>
+            <p class="contacts-text">
+                Вопросы о свадьбе? Пишите или звоните нашему организатору по данному номеру:
+            </p>
+
+            <div class="envelope-container" id="interactiveEnvelope" onclick="toggleEnvelope()">
+                <!-- Wax Seal Toggle -->
+                <div class="wax-seal">
+                    <i class="fa-solid fa-stamp"></i>
+                </div>
+
+                <div class="envelope-flap"></div>
+
+                <!-- Letter Inside with Quick Social Links -->
+                <div class="envelope-card">
+                    <a href="tel:+79999999999" class="phone-link" onclick="event.stopPropagation()">+7 999 999-99-99</a>
+                    
+                    <div class="social-links" onclick="event.stopPropagation()">
+                        <a href="https://t.me" target="_blank" class="social-link-btn"><i class="fa-brands fa-telegram"></i> Telegram</a>
+                        <a href="https://whatsapp.com" target="_blank" class="social-link-btn"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+                    </div>
+                </div>
+
+                <div class="envelope-body">
+                    <span class="envelope-text-withlove">with love</span>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="lightbox-overlay" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeGallery()"><i class="fa-solid fa-xmark"></i></button>
+            <button class="lightbox-nav prev" onclick="changeSlide(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+            <img src="" id="lightboxImg" class="lightbox-img" alt="Gallery photo">
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+            <button class="lightbox-nav next" onclick="changeSlide(1)"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="rsvpModal">
+        <div class="modal-card">
+            <button class="modal-close-btn" onclick="closeRsvpModal()"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="font-serif" style="font-size: 1.8rem; text-align: center; margin-bottom: 20px; color: var(--burgundy);">Анкета Гостя</h3>
+
+            <form id="rsvpForm" onsubmit="handleRsvpSubmit(event)">
+                <div class="form-group">
+                    <label>Ваше Имя и Фамилия *</label>
+                    <input type="text" class="form-control" placeholder="Иван Иванов" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Будете ли вы с нами? *</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="attend" value="yes" checked> С удовольствием
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="attend" value="no"> К сожалению, нет
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Будет ли с вами пара / сопровождение (+1)?</label>
+                    <input type="text" class="form-control" placeholder="Имя вашего сопровождения">
+                </div>
+
+                <div class="form-group">
+                    <label>Предпочтения по напиткам</label>
+                    <input type="text" class="form-control" placeholder="Вино, шампанское, коньяк, сок...">
+                </div>
+
+                <div class="form-group">
+                    <label>Нужен ли вам трансфер?</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="transfer" value="yes"> Да, нужен
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="transfer" value="no" checked> Нет, доберусь сам(а)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Любимая песня для диджея</label>
+                    <input type="text" class="form-control" placeholder="Исполнитель — Название трека">
+                </div>
+
+                <div class="form-group">
+                    <label>Пожелание молодым</label>
+                    <textarea class="form-control" rows="3" placeholder="Ваши теплые слова..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-cream" style="width: 100%; background-color: var(--burgundy); color: #ffffff;">
+                    Отправить анкету
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        /* ---------------- TOAST NOTIFICATION ---------------- */
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        /* ---------------- AUDIO PLAYER ---------------- */
+        const audioBtn = document.getElementById('audioToggleBtn');
+        const bgAudio = document.getElementById('bgAudio');
+
+        audioBtn.addEventListener('click', () => {
+            if (bgAudio.paused) {
+                bgAudio.play().then(() => {
+                    audioBtn.classList.add('playing');
+                    showToast('Музыка включена');
+                }).catch(() => {
+                    showToast('Нажмите ещё раз для воспроизведения');
+                });
+            } else {
+                bgAudio.pause();
+                audioBtn.classList.remove('playing');
+                showToast('Музыка поставлена на паузу');
+            }
+        });
+
+        /* ---------------- COUNTDOWN TIMER ---------------- */
+        const weddingDate = new Date('2026-08-11T17:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const diff = weddingDate - now;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('cdDays').textContent = days < 10 ? '0' + days : days;
+                document.getElementById('cdHours').textContent = hours < 10 ? '0' + hours : hours;
+                document.getElementById('cdMins').textContent = mins < 10 ? '0' + mins : mins;
+                document.getElementById('cdSecs').textContent = secs < 10 ? '0' + secs : secs;
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        /* ---------------- PHOTO GALLERY LIGHTBOX ---------------- */
+        const galleryImages = [
+            { url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800', caption: 'Елена & Андрей' },
+            { url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800', caption: 'Моменты счастья' },
+            { url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800', caption: 'Наша история' }
+        ];
+        let currentSlide = 0;
+
+        function openGallery(index) {
+            currentSlide = index;
+            document.getElementById('lightboxImg').src = galleryImages[currentSlide].url;
+            document.getElementById('lightboxCaption').textContent = galleryImages[currentSlide].caption;
+            document.getElementById('lightbox').classList.add('active');
+        }
+
+        function closeGallery() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        function changeSlide(direction) {
+            currentSlide = (currentSlide + direction + galleryImages.length) % galleryImages.length;
+            document.getElementById('lightboxImg').src = galleryImages[currentSlide].url;
+            document.getElementById('lightboxCaption').textContent = galleryImages[currentSlide].caption;
+        }
+
+        /* ---------------- DRESS CODE COPY COLOR ---------------- */
+        function copyColor(hex, name) {
+            navigator.clipboard.writeText(hex).then(() => {
+                showToast(`Цвет ${name} (${hex}) скопирован!`);
+            }).catch(() => {
+                showToast(`Цвет ${name}: ${hex}`);
+            });
+        }
+
+        /* ---------------- ICS CALENDAR DOWNLOAD ---------------- */
+        function downloadIcsCalendar() {
+            const icsData = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//Wedding Day Elena and Andrey//RU',
+                'BEGIN:VEVENT',
+                'SUMMARY:Свадьба Елены и Андрея',
+                'DESCRIPTION:Приглашаем вас разделить с нами торжественный день!',
+                'LOCATION:Ресторан Lumière, Санкт-Петербург, ул. Кленовая, д. 17, лит. Б',
+                'DTSTART:20260811T140000Z',
+                'DTEND:20260811T200000Z',
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].join('\n');
+
+            const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.setAttribute('download', 'wedding-elena-andrey.ics');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('Событие добавлено в загрузки');
+        }
+
+        /* ---------------- RSVP MODAL & CONFETTI ---------------- */
+        function openRsvpModal() {
+            document.getElementById('rsvpModal').classList.add('active');
+        }
+
+        function closeRsvpModal() {
+            document.getElementById('rsvpModal').classList.remove('active');
+        }
+
+        function handleRsvpSubmit(e) {
+            e.preventDefault();
+            closeRsvpModal();
+            triggerConfetti();
+            showToast('Спасибо! Ваш ответ успешно отправлен ♥');
+            document.getElementById('rsvpForm').reset();
+        }
+
+        /* ---------------- 3D ENVELOPE TOGGLE ---------------- */
+        function toggleEnvelope() {
+            document.getElementById('interactiveEnvelope').classList.toggle('open');
+        }
+
+        /* ---------------- CONFETTI CANVAS EFFECT ---------------- */
+        function triggerConfetti() {
+            const canvas = document.getElementById('confettiCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#5A151E', '#C5A059', '#E2DACD', '#ffffff', '#C8929A'];
+
+            for (let i = 0; i < 90; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    vx: (Math.random() - 0.5) * 12,
+                    vy: (Math.random() - 0.7) * 12,
+                    size: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rotation: Math.random() * 360,
+                    opacity: 1
+                });
+            }
+
+            function animateConfetti() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = false;
+
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.2; // gravity
+                    p.opacity -= 0.015;
+
+                    if (p.opacity > 0) {
+                        alive = true;
+                        ctx.save();
+                        ctx.translate(p.x, p.y);
+                        ctx.rotate((p.rotation * Math.PI) / 180);
+                        ctx.globalAlpha = Math.max(0, p.opacity);
+                        ctx.fillStyle = p.color;
+                        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                        ctx.restore();
+                    }
+                });
+
+                if (alive) {
+                    requestAnimationFrame(animateConfetti);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+            animateConfetti();
+        }
+
+        /* ---------------- FLOATING PETALS CANVAS EFFECT ---------------- */
+        const petalsCanvas = document.getElementById('petalsCanvas');
+        const pCtx = petalsCanvas.getContext('2d');
+        let petals = [];
+
+        function resizePetalsCanvas() {
+            const frame = document.querySelector('.mobile-frame');
+            petalsCanvas.width = frame.clientWidth;
+            petalsCanvas.height = frame.clientHeight;
+        }
+
+        function createPetals() {
+            petals = [];
+            for (let i = 0; i < 20; i++) {
+                petals.push({
+                    x: Math.random() * petalsCanvas.width,
+                    y: Math.random() * petalsCanvas.height,
+                    size: Math.random() * 7 + 5,
+                    speedY: Math.random() * 0.8 + 0.4,
+                    speedX: Math.random() * 0.5 - 0.25,
+                    opacity: Math.random() * 0.5 + 0.2,
+                    rotation: Math.random() * 360
+                });
+            }
+        }
+
+        function animatePetals() {
+            pCtx.clearRect(0, 0, petalsCanvas.width, petalsCanvas.height);
+
+            petals.forEach(p => {
+                p.y += p.speedY;
+                p.x += Math.sin(p.y * 0.01) * 0.5;
+                p.rotation += 0.5;
+
+                if (p.y > petalsCanvas.height) {
+                    p.y = -10;
+                    p.x = Math.random() * petalsCanvas.width;
+                }
+
+                pCtx.save();
+                pCtx.translate(p.x, p.y);
+                pCtx.rotate((p.rotation * Math.PI) / 180);
+                pCtx.globalAlpha = p.opacity;
+                pCtx.fillStyle = '#C8929A';
+                pCtx.beginPath();
+                pCtx.ellipse(0, 0, p.size, p.size / 2, 0, 0, Math.PI * 2);
+                pCtx.fill();
+                pCtx.restore();
+            });
+
+            requestAnimationFrame(animatePetals);
+        }
+
+        /* ---------------- SCROLL OBSERVER ---------------- */
+        document.addEventListener('DOMContentLoaded', () => {
+            resizePetalsCanvas();
+            createPetals();
+            animatePetals();
+
+            window.addEventListener('resize', resizePetalsCanvas);
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in-scroll').forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
